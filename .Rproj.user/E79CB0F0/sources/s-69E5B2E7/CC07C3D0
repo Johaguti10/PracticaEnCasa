@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1562949633691.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "726011257",
+    "id" : "CC07C3D0",
+    "lastKnownWriteTime" : 1562964922,
+    "last_content_update" : 1562964922703,
+    "path" : "D:/OneDrive/JGGCoomeva/R/GitHub/PracticaEnCasa/IntroduccionR.R",
+    "project_path" : "IntroduccionR.R",
+    "properties" : {
+        "cursorPosition" : "13,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
