@@ -1,0 +1,377 @@
+#      ----------------------------------------
+#              GENERALIDADES
+#           vectores y matrices
+#      ----------------------------------------
+
+# NOTA: Asignar un valor a una variable:
+# a partir de la version de R2000 equivalen los simbolos
+    # <-  
+    #  =
+
+# Ejemplo:
+        x <- 4
+        # equivale a
+        x=4       
+
+# un vector se puede definir por un solo símbolo y la expresión c()
+       x <- c(10,20,30,40)
+       gente <- c("Manolo","Carmen","Luis","Sara")
+
+# si se pone x+100 se suma 100 a todos los componentes
+       x+100
+
+# se pueden anidar los vectores
+       x <- c(1,2,3,4,5)
+       eso <- c(x,x,x)
+       eso
+
+# cbind() forma un array bidimensional combinando las columnas
+       c1 <- c(10,20,30,40)
+       c2 <- c(5,10,15,20)
+       x <- cbind(c1,c2)
+
+# rbind() forma un array bidimensional combinando las filas
+       x <- rbind(c1,c2)
+
+# para obtener un valor de un array se pone entre corchetes el elemento
+# requerido, o la columna, o la fila:
+       x[2,2]
+       x[,2]
+       x[2,]
+
+# se les puede asignar un nombre a las columnas o filas
+       v2 <- x[,2]
+
+# para crear una lista creciente o decreciente de enteros
+       0:10
+       20:8
+
+# repetición de valores:
+# rep(valor a repetir, numero de repeticiones)
+
+# Ejemplo: se repite el 3 diez veces
+       rep(3,10) 
+
+# Ejemplo: se repite los números del 1 al 3; el primero 1 vez, 
+# el segundo 2 veces y el tercero 3 veces
+       rep(1:3,1:3) 
+
+# seq(comienzo, final, intervalo)
+       seq(1,8,1)
+        
+# asigna la secuencia que va desde el 1 al 5 en saltos de 0.1
+       c <- seq (1,5,0.1)
+       
+# subíndices
+       z <- c(1,2,3,4,5,6,5,4,3,2,1)
+       z
+       z[c(1,3,5,7,9)]
+       z[7]
+       z[7:10]
+
+# para eliminar el elemento i-esimo del vector:  z[-i]
+       z[-6]
+       z[-c(2,4,6,8)]
+
+# Matrices: sólo pueden contener datos de un tipo a la vez 
+# (números o caracteres)
+
+# Se puede crear un array bidimensional de valores con matrix():
+# matrix(vector de valores, num de filas, num de columnas)
+
+# Ejemplo: rellenar la matriz por columnas
+    A <- matrix(1:12,3,4)
+
+# Ejemplo: rellenar la matriz por filas
+    A <- matrix(1:12,3,4, byrow=T)
+
+# Ejemplo: crea una matriz de 9's
+       matrix(9,3,4)
+
+# Ejemplo: crea una matriz diagonal de orden 4
+        diag(4)
+
+# Se pueden crear y juntar elementos en listas
+        x <- 1:10
+        y <- matrix(1:10,nrow=5)
+        xylista <- list(x,y)
+        xylista
+
+# para acceder a los elementos de una lista se ponen 
+# dobles corchetes
+        xylista[[1]] 
+
+# multiplicacion de matrices
+        f1 <- c(1,2,3,4)
+        f2 <- c(5,6,7,8)
+        f3 <- c(9,10,11,12)
+        A1 <- matrix(c(f1,f2,f3), nrow=3)
+        A2 <- matrix(c(f1,f2,f3), nrow=3, byrow=T)
+        
+# multiplica elemento a elemento        
+        A1*A2
+
+# multiplica por la transpuesta de A2:
+        T <- A1%*%t(A2)
+        T
+        
+# calculo autovectores y autovalores
+        help(eigen)
+        eigen(T)
+        # solo autovalores
+        eigen(T, only.values = TRUE)
+
+# calcula el determinante de una matriz cuadrada
+        det(T)
+
+# calcula la traza de la matriz
+        sum(diag(T))
+
+# calculo la inversa con solve(matriz)
+        f1 <- c(28, 19, 18, 14)
+        f2 <- c(19, 40, 38, 18)
+        f3 <- c(18, 38, 51, 3)
+        f4 <- c(14, 18, 3, 27)
+        A <- rbind(f1,f2,f3,f4)
+        Ai <- solve(A)
+# si se multiplican, se obtiene aproximadamente la identidad
+        A%*%Ai
+
+# rango de una matriz:
+# calculo la descomposicion QR de la matriz
+        la.qr <- qr(A)
+        # se listan los atributos del objeto anterior
+        names(la.qr)
+        # se extrae el atributo rango
+        print(c("El rango de la matriz es",la.qr$rank),quote = F)
+        
+# el rango de una matriz cuadrada simetrica equivale al numero de 
+# autovalores distintos de 0:
+        autoval <- eigen(A, only.values = TRUE)
+        length(autoval[[1]]>=1.e-10)
+
+#      ---------------------------------------------
+#         Lectura y grabacion de ficheros externos
+#      ---------------------------------------------
+
+# Para leer datos, con la primera fila con los nombres de las variables,
+# de un fichero externo se pone
+       datos <-read.table("c:\\mis_subdirectorios\\fichero",header=T)
+
+# scan: Lee los datos desde el teclado o fichero y los mete en un vector o
+# lista
+
+# Ejemplo: leo y pongo los datos en una matriz con 7 filas rellenandola
+# por filas
+       datos <- matrix(scan("c:\\mis_subdirectorios\\fichero"),nrow=7,byrow=T)
+
+# Escribo una matriz en un fichero con write. 
+# OJO: para que salga en el orden correcto hay que transponerla: t(X)
+       write(t(datos),file="c:\\misubdirectorio\\fichero2")
+
+#      ----------------
+#         Data Frames
+#      ----------------
+
+# En los data frames se pueden mezclar datos caracter y numericos
+# los vectores que lo forman tienen que tener el mismo numero de elementos 
+        peso <- c(50,70,45,80,72)
+        altura <- c(160,165,180,190,175)
+        edad <- c(20,40,41,31,33)
+        nombres <- c("Lorena","Manolo","Carmen","Luis","Sara")
+        sexo <- c("M","H","M","H","M")
+        datos <- data.frame(nombres,sexo,peso,altura,edad)
+        datos
+
+# se pueden coger partes del data frame
+         datos[,c(1,2,5)]
+
+# Grabo un data.frame en un fichero ascii que se denomina cosa y se  
+# separan los resultados con comas (si se quiere) y sin nombres en las columnas
+       write.table(cosa, file="c:\\misubdirectorio\\fichero2", sep = ",", col.names = NA)
+
+#      ---------------------------------
+#          Condiciones lógicas y ciclos
+#      ---------------------------------
+
+# elementos del vector z que son menores que 6
+       z[z<6]
+
+# elementos del vector z que son menores que 3 y mayores o iguales que 6
+       z[z<3 & z>=6]
+
+# Otras operaciones:
+# and:  &
+# or:   |
+# operadores lógicos:   >  <  >=  <=  ==  !=
+
+# Se pueden generar secuencias de T o F según los casos
+       z<3 & z<6
+
+# Cuando un valor es imposible (por ejemplo ln de un número negativo)
+# aparece NA
+
+# para comprobar cuales son los NA (not available) se usa la función 
+# is.na(nombre del vector) da un vector de T si es NA y F en otro caso
+       s <- c(1,2,3,NA,5,6,5,NA,3,2,1)
+       is.na(s)
+
+# para eliminar los NA del vector
+       s <- s[is.na(s) == F]
+
+# para calcular el número de elementos de un vector o el
+# numero de columnas de un dataframe: length()
+       d <- 1:12
+       length(d)
+
+# Condiciones lógicas.
+# ifelse((condición/es), expresión para cierto, expresión para falso)
+       d <- 1:12
+       length(d)/2
+       id <- c(rep(0,length(d)/2),rep(1,length(d)/2))
+       id
+       id==0
+       ifelse(id==0,2*d,d/2)
+       ifelse(id<=4,d+1,0)
+       
+# if(condicion) accion1 else accion2 
+       if (y >1){
+            x <- 2*x
+            y <- 2*y
+        } else{
+            x <- 38
+            x <-2*x
+        }
+    x
+    y
+
+# for-loops: se pueden ejecutar las sentencias varias veces
+# for(rango de indices){comandos a ejecutar}
+       cuento <- c(0,0,0,0)
+       n <- c(2,4,6,4)
+       for(i in 1:length(n)){
+       cuento <- c(cuento,rep(i,n[i]))
+       }
+       cuento
+
+# otro ejemplo:
+       for (i in 1:10) print(i)
+       n <- 10
+       while (n > 0) {
+       cat(n,"es mayor que 0 \n")
+              n <- n - 1
+       }
+
+#      -------------------- 
+#         Mas funciones
+#      --------------------
+
+# producto de todos los elementos consecutivos de un array
+       prod(x)
+
+# sumatorio de todos los elementos consecutivos de un array
+       cumsum(x)
+
+# diferencia de los pares consecutivos de elementos de un array.
+       diff(x)
+
+# redondea la variable al numero de decimales que se quiere
+        # round(variable, numero de decimales)
+        round(x,1)
+
+# Para ordenar un vector en orden ascendente
+       sort(x)
+
+# rev() reves del orden de un vector
+       rev(1:12)
+
+# ordenar un vector en orden descendente
+       rev(sort(x))
+
+# rank() devuelve un vector con las posiciones
+# que ocupa cada elemento del vector
+
+# Ejemplo:
+       x <- c(8, 4, 2, 6, 3)
+       rank(x)
+# devuelve (5,3,1,4,2) i.e. el 5º en el orden creciente
+# es el que está en la posición 1, el 3º en el orden
+# creciente es el que está en la posición 2, ... 
+
+# order() da las posiciones donde se encuentran los elementos de un 
+# vector desde el menor valor hasta el mayor.
+
+# Ejemplo:
+       order(x)
+# esto produce: (3,5,2,4,1) i.e. el menor valor está en la posición
+# 3 del vector x, el siguiente está en la posición 5 del vector x,...
+       
+# el vector quedaria ordenado asi
+       x[order(x)]
+
+# Ejemplo: se podría usar para la búsqueda lineal de un mínimo
+       x <- seq(0,5,0.001)
+
+# secuencia de valores desde 0 a 5 con pasos de 0.001 
+       fx <- x^3-8*x-20
+       m <- order(fx)
+
+# en el vector m están las posiciones de los elementos del vector ordenados
+# de menos a mas
+       fx[m[1]]
+       x[m[1]]
+
+#      --------------------
+#         Crear funciones
+#      --------------------
+
+# Sintaxis basica:
+# nombre.funcion <- function(argumentos){código a ejecutar}
+
+# ejemplo:
+       describe <- function(x){
+       n <- length(x)
+       media <- mean(x)
+       mediana <- median(x)
+       s2 <- var(x)
+       s <- sqrt(s2)
+       se <- s/sqrt(n)
+       xmin <- min(x)
+       xmax <- max(x)
+       rango <- xmax-xmin
+       cbind(n,media,mediana,s2,s,se,xmin,xmax,rango)
+       }
+
+# Ejemplo:
+# funcion para calcular el coeficiente de asimetría de un vector
+       asim <- function(x){
+       n <- length(x)
+       asimetria <- (sum((x-mean(x))^3)/n) / ((sqrt(var(x))^3))
+       cbind(asimetria)
+       }
+
+# funcion para calcular el coeficiente de curtosis de un vector
+       kurt <- function(x){
+       n <- length(x)
+       kurtosis <- (sum((x-mean(x))^4)/n) / ((sqrt(var(x))^4)) - 3
+       cbind(kurtosis)
+       }
+
+# Ejemplo:
+# genero, por ejemplo, una muestra de tamaño 100 de una distribucion normal
+# N(10,1)
+       y <- rnorm(100,10,1)
+       describe(y)
+       asim(y)
+       kurt(y)
+
+# para ver el código de la función escrita por un usuario get("nombrefuncion")
+       get("describe")
+
+# también simplemente poniendo
+       describe
+
+# la depuracion de una funcion es con traceback()
+       f1 <- function(x) {y <- x+4; f2(y)}
+       f1(5)
+       traceback()
